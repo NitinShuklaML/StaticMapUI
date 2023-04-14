@@ -193,7 +193,7 @@
 
 		function fetchCoordinates() {
 			const xhr = new XMLHttpRequest();
-			xhr.open("GET", "flaxrate-serverapi.azurewebsites.net/api/GpsLocation", true);
+			xhr.open("GET", "https://flaxrate-serverapi.azurewebsites.net/api/GpsLocation", true);
 			xhr.onload = function () {
 				if (xhr.status === 200) {
 					const response = JSON.parse(xhr.responseText);
