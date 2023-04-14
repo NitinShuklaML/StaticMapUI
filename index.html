@@ -192,26 +192,34 @@
 
 
 		function fetchCoordinates() {
-			const xhr = new XMLHttpRequest();
-			xhr.open("GET", "https://flaxrate-serverapi.azurewebsites.net/api/GpsLocation", true);
-			xhr.onload = function () {
-				if (xhr.status === 200) {
-					const response = JSON.parse(xhr.responseText);
-					if (!response.error) {
-						const lat = parseFloat(response.Lat);
-						const lng = parseFloat(response.Lng);
-						const newPosition = new google.maps.LatLng(lat, lng);
-						vehicleMarker.setPosition(newPosition);
-						map.setCenter(newPosition);
-					} else {
-						console.log("Error fetching coordinates:", response.error);
-					}
-				} else {
-					console.log("Error fetching coordinates:", xhr.statusText);
-				}
-			};
-			xhr.send();
-		}
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", "https://flaxrate-serverapi.azurewebsites.net/api/GpsLocation", true);
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            const response = JSON.parse(xhr.responseText);
+            if (!response.error) {
+                const lat = parseFloat(response.Lat);
+                const lng = parseFloat(response.Lng);
+                const newPosition = new google.maps.LatLng(lat, lng);
+                
+                // Create the vehicleMarker if it doesn't exist, and set its position
+                if (!vehicleMarker) {
+                    createVehicleMarker(newPosition);
+                } else {
+                    vehicleMarker.setPosition(newPosition);
+                }
+                
+                map.setCenter(newPosition);
+            } else {
+                console.log("Error fetching coordinates:", response.error);
+            }
+        } else {
+            console.log("Error fetching coordinates:", xhr.statusText);
+        }
+    };
+    xhr.send();
+}
+
 
 		// Call fetchCoordinates every 5 seconds to update the vehicle marker
 		setInterval(fetchCoordinates, 5000);
