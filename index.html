@@ -194,37 +194,40 @@
 		let iteration = 0;
 
 		function fetchCoordinates() {
-    const xhr = new XMLHttpRequest();
-    const apiUrl = `https://flaxrate-serverapi.azurewebsites.net/api/GpsLocation/sample-route?iter=${iteration}`;
-    xhr.open("GET", apiUrl, true);
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            const response = JSON.parse(xhr.responseText);
-            if (!response.error) {
-                const lat = parseFloat(response.Lat);
-                const lng = parseFloat(response.Lng);
-                const newPosition = new google.maps.LatLng(lat, lng);
-                vehicleMarker.setPosition(newPosition);
-                map.setCenter(newPosition);
-            } else {
-                console.log("Error fetching coordinates:", response.error);
-            }
-        } else {
-            console.log("Error fetching coordinates:", xhr.statusText);
-        }
-    };
-    xhr.send();
+    			const xhr = new XMLHttpRequest();
+    			const apiUrl = `https://flaxrate-serverapi.azurewebsites.net/api/GpsLocation/sample-route?iter=${iteration}`;
+    			xhr.open("GET", apiUrl, true);
+    			xhr.onload = function () {
+        			if (xhr.status === 200) {
+            			const response = JSON.parse(xhr.responseText);
+            			console.log("Response:", response); // Add this line
+            			if (!response.error) {
+                			const lat = parseFloat(response.Lat);
+                			const lng = parseFloat(response.Lng);
+                			console.log("Latitude:", lat, "Longitude:", lng); // Add this line
+                			if (!isNaN(lat) && !isNaN(lng)) {
+    						const newPosition = new google.maps.LatLng(lat, lng);
+    						vehicleMarker.setPosition(newPosition);
+    						map.setCenter(newPosition);
+					   } else {
+    					console.log("Invalid coordinates received:", lat, lng);
+					}
+            			} else {
+               				 console.log("Error fetching coordinates:", response.error);
+            				}
+        			} else {
+            				console.log("Error fetching coordinates:", xhr.statusText);
+        				}
+    				};
+   				 xhr.send();
 
-    // Increment the iteration number for the next call
-    iteration++;
-}
+    				// Increment the iteration number for the next call
+    				iteration++;
+			}
 
-		// Call fetchCoordinates every 5 seconds to update the vehicle marker
-		// setInterval(fetchCoordinates, 5000);
 		
-		// ...
 
-		document.addEventListener("DOMContentLoaded", function () {
+			document.addEventListener("DOMContentLoaded", function () {
 			document.getElementById("map-path-btn").addEventListener("click", function () {
 				// Call fetchCoordinates every 5 seconds to update the vehicle marker
 				setInterval(fetchCoordinates, 5000);
