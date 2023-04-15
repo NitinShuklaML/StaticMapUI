@@ -195,7 +195,7 @@
 
 		function fetchCoordinates() {
     			const xhr = new XMLHttpRequest();
-    			const apiUrl = `https://flaxrate-serverapi.azurewebsites.net/api/GpsLocation/sample-route?iter=${iteration}`;
+    			const apiUrl = `https://flaxrate-serverapi.azurewebsites.net/api/GpsLocation/coordinate`;
     			xhr.open("GET", apiUrl, true);
     			xhr.onload = function () {
         			if (xhr.status === 200) {
