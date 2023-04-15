@@ -202,8 +202,8 @@
             			const response = JSON.parse(xhr.responseText);
             			console.log("Response:", response); // Add this line
             			if (!response.error) {
-                			const lat = parseFloat(response.lat);
-                			const lng = parseFloat(response.lng);
+                			const lat = parseFloat(response.Lat);
+                			const lng = parseFloat(response.Lng);
                 			console.log("Latitude:", lat, "Longitude:", lng); // Add this line
                 			if (!isNaN(lat) && !isNaN(lng)) {
     						const newPosition = new google.maps.LatLng(lat, lng);
